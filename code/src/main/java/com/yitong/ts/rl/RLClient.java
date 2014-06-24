@@ -12,7 +12,7 @@ public interface RLClient {
      * @return String
      * @throws Exception
      */
-    public String getInvoiceNo() throws Exception;
+    public String getInvoiceNo(String code, String password) throws Exception;
 
     /**
      * 修改鉴权密码
@@ -21,7 +21,7 @@ public interface RLClient {
      * @return String
      * @throws Exception
      */
-    public String changePasswd(String nNewPasswd) throws Exception;
+    public String changePasswd(String code, String password, String nNewPasswd) throws Exception;
 
 
     /**
@@ -31,7 +31,7 @@ public interface RLClient {
      * @return Object
      * @throws Exception
      */
-    public String[] getCustInfo(String nCardId) throws Exception;
+    public Object[] getCustInfo(String code, String password, String nCardId) throws Exception;
 
 
     /**
@@ -47,8 +47,9 @@ public interface RLClient {
      * @return Object
      * @throws Exception
      */
-    public String[] custChange(String nCustId, String nYear, String nInvoiceCode,
-                               String nInvoiceName, double nMoney, String nMethod,
+    public Object[] custChange(String code, String password, String nCustId,
+                               String nYear, String nInvoiceCode, String nInvoiceName,
+                               double nMoney, String nMethod,
                                String nBankSerialNo)
             throws Exception;
 
@@ -59,7 +60,7 @@ public interface RLClient {
      * @return String
      * @throws Exception
      */
-    public String usedInvoiceCancel(String nInvoiceCode) throws Exception;
+    public String usedInvoiceCancel(String code, String password, String nInvoiceCode) throws Exception;
 
     /**
      * 未使用发票作废
@@ -68,7 +69,7 @@ public interface RLClient {
      * @return String
      * @throws Exception
      */
-    public String freeInvoiceCancel(String nInvoiceCode) throws Exception;
+    public String freeInvoiceCancel(String code, String password, String nInvoiceCode) throws Exception;
 
     /**
      * 收费员收款金额统计
@@ -78,7 +79,7 @@ public interface RLClient {
      * @return String
      * @throws Exception
      */
-    public String chargeCaclute(String beginDate, String endDate) throws Exception;
+    public String chargeCaclute(String code, String password, String beginDate, String endDate) throws Exception;
 
     /**
      * 收费员收款明细统计
@@ -88,5 +89,5 @@ public interface RLClient {
      * @return Object
      * @throws Exception
      */
-    public Object chargeDetailCaclute(String beginDate, String endDate) throws Exception;
+    public Object[] chargeDetailCaclute(String code, String password, String beginDate, String endDate) throws Exception;
 }

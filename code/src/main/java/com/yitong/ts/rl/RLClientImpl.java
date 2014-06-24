@@ -1,10 +1,13 @@
 package com.yitong.ts.rl;
 
 import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
 
 
 /**
@@ -19,99 +22,70 @@ public class RLClientImpl implements RLClient {
 
     @Value("${rl.ws.url}")
     private String wsdlUrl;
-    @Value("${rl.ws.qname}")
-    private String qName;
-    @Value("${rl.ws.header.code.attr}")
-    private String codeAttributeName;
-    @Value("${rl.ws.header.password.attr}")
-    private String passwordAttributeName;
-    @Value("${rl.ws.header.code.value}")
-    private String code;       //鉴权Code
-    @Value("${rl.ws.header.password.value}")
-    private String password;   //鉴权密码
 
-    private Client client;
-
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    /**
-     * 根据指定的url创建客户端
-     *
-     * @param wsdlUrl wsdl地址
-     * @return 客户端
-     */
-    public void init() {
-        logger.info("初始化创建webserver客户端(url:{})", this.wsdlUrl);
-        RLClientImpl rlClient = new RLClientImpl();
-//        DynamicClientFactory clientFactory = JaxWsDynamicClientFactory.newInstance();
-//        Client client = clientFactory.createClient(wsdlUrl);
-//        Hashtable<String, String> attributes = new Hashtable<String, String>();
-//        attributes.put(this.codeAttributeName, this.code);
-//        attributes.put(this.passwordAttributeName, this.password);
-//        client.getOutInterceptors().add(new BankSoapHeader(this.qName, attributes));
-//        rlClient.client = client;
-    }
 
     /**
      * 调用服务端方法
      *
-     * @param method 方法名
-     * @param params 参数列表
+     * @param method   方法名
+     * @param code     鉴权码
+     * @param password 鉴权密码
+     * @param params   参数列表
      * @return 执行结果
      * @throws Exception
      */
-    public Object[] invoke(String method, Object... params) throws Exception {
-        return this.client.invoke(method, params);
+    public Object[] invoke(String method, String code, String password, Object... params) throws Exception {
+        JaxWsDynamicClientFactory clientFactory = JaxWsDynamicClientFactory.newInstance();
+        Client client = clientFactory.createClient(this.wsdlUrl);
+        // 添加soap header
+        client.getOutInterceptors().add(new BankSoapHeaderInterceptor(code, password));
+        // 添加soap消息日志打印
+        client.getOutInterceptors().add(new org.apache.cxf.interceptor.LoggingOutInterceptor());
+        return client.invoke(method, params);
     }
 
 
     @Override
-    public String getInvoiceNo() throws Exception {
-        return null;
+    public String getInvoiceNo(String code, String password) throws Exception {
+        return String.valueOf(this.invoke("GetInvoiceNo", code, password)[0]);
     }
 
     @Override
-    public String changePasswd(String nNewPasswd) throws Exception {
-        return null;
+    public String changePasswd(String code, String password, String nNewPasswd) throws Exception {
+        return String.valueOf(this.invoke("ChangePasswd", code, password, nNewPasswd)[0]);
     }
 
     @Override
-    public String[] getCustInfo(String nCardId) throws Exception {
-        return null;
+    public Object[] getCustInfo(String code, String password, String nCardId) throws Exception {
+        return this.invoke("GetCustInfo", code, password, nCardId);
     }
 
     @Override
-    public String[] custChange(String nCustId, String nYear, String nInvoiceCode,
-                             String nInvoiceName, double nMoney, String nMethod,
-                             String nBankSerialNo)
+    public Object[] custChange(String code, String password, String nCustId, String nYear,
+                               String nInvoiceCode, String nInvoiceName, double nMoney,
+                               String nMethod, String nBankSerialNo)
             throws Exception {
-        return null;
+        BigDecimal decimal = new BigDecimal(Double.toString(nMoney));
+        return this.invoke("CustCharge", code, password, nCustId, nYear, nInvoiceCode, nInvoiceName, decimal, nMethod, nBankSerialNo);
     }
 
     @Override
-    public String usedInvoiceCancel(String nInvoiceCode) throws Exception {
-        return null;
+    public String usedInvoiceCancel(String code, String password, String nInvoiceCode) throws Exception {
+        return String.valueOf(this.invoke("UsedInvoiceCancel", code, password, nInvoiceCode)[0]);
     }
 
     @Override
-    public String freeInvoiceCancel(String nInvoiceCode) throws Exception {
-        return null;
+    public String freeInvoiceCancel(String code, String password, String nInvoiceCode) throws Exception {
+        return String.valueOf(this.invoke("FreeInvoiceCancel", code, password, nInvoiceCode)[0]);
     }
 
     @Override
-    public String chargeCaclute(String beginDate, String endDate) throws Exception {
-        return null;
+    public String chargeCaclute(String code, String password, String beginDate, String endDate) throws Exception {
+        return String.valueOf(this.invoke("ChargeCaclute", code, password, beginDate, endDate)[0]);
     }
 
     @Override
-    public Object chargeDetailCaclute(String beginDate, String endDate) throws Exception {
-        return null;
+    public Object[] chargeDetailCaclute(String code, String password, String beginDate, String endDate) throws Exception {
+        return this.invoke("ChargeCaclute", code, password, beginDate, endDate);
     }
 }
