@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<WEBSERVICE>
+    <HEAD>
+        <RspCode></RspCode>
+        <RspMsg></RspMsg>
+    </HEAD>
+    <BODY>
+        <ResultAbout>${ResultAbout}</ResultAbout>
+        <custBaseInfo>
+            <CUST_ID>${CustId}</CUST_ID>
+            <CUST_NAME>${CustName}</CUST_NAME>
+            <BUSINESS_OFFICE>${BusinessOffice}</BUSINESS_OFFICE>
+            <HEATING_STATIONS_NAME>${HeatingStationsName}</HEATING_STATIONS_NAME>
+            <HEATING_UPTOWN>${HeatingUptown}</HEATING_UPTOWN>
+            <CUST_ADDR>${CustAddress}</CUST_ADDR>
+        </custBaseInfo>
+        ${custArrearInfo}
+    </BODY>
+</WEBSERVICE>

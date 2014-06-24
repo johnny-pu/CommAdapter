@@ -1,0 +1,14 @@
+<custArrearInfo>
+    <ARREAR_YEAR>${ArrearYear}</ARREAR_YEAR>
+    <HEATING_TYPE>${HeatingType}</HEATING_TYPE>
+    <HEATING_PRICE>${HeatingPrice}</HEATING_PRICE>
+    <HEATING_MONTH>${HeatingMonth}</HEATING_MONTH>
+    <HEATING_AREA>${HeatingArea}</HEATING_AREA>
+    <INIT_ARREARAGE>${InitArrearage}</INIT_ARREARAGE>
+    <STOP_ARREARAGE>${StopArrearage}</STOP_ARREARAGE>
+    <CHANGE_ARREARAGE>${ChangeArrearage}</CHANGE_ARREARAGE>
+    <FAOURAL_ARREARAGE>${FaouralArrearage}</FAOURAL_ARREARAGE>
+    <SCALE_ARREARAGE>${ScaleArrearage}</SCALE_ARREARAGE>
+    <PAYMENT>${Payment}</PAYMENT>
+    <ARREARAGE>${Arrearage}</ARREARAGE>
+</custArrearInfo>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<WEBSERVICE>
+    <HEAD>
+        <RspCode></RspCode>
+        <RspMsg></RspMsg>
+    </HEAD>
+    <BODY>
+        <ResultAbout>${ResultAbout}</ResultAbout>
+        <ChargeMoney>${ChargeMoney}</ChargeMoney>
+        <EInvoiceNo>${EInvoiceNo}</EInvoiceNo>
+        <CInvoiceNo>${CInvoiceNo}</CInvoiceNo>
+    </BODY>
+</WEBSERVICE>
